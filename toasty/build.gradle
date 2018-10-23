@@ -27,26 +27,6 @@ android {
     group = 'com.andyshon.toasty'
     version = '1.0.2'
 
-    task generateSourcesJar(type: Jar) {
-        from android.sourceSets.main.java.srcDirs
-        classifier 'sources'
-    }
-
-    task generateJavadocs(type: Javadoc) {
-        source = android.sourceSets.main.java.srcDirs
-        classpath += project.files(android.getBootClasspath()
-                .join(File.pathSeparator))
-    }
-
-    task generateJavadocsJar(type: Jar) {
-        from generateJavadocs.destinationDir
-        classifier 'javadoc'
-    }
-    artifacts {
-        archives generateJavadocsJar
-        archives generateSourcesJar
-    }
-
 }
 
 dependencies {

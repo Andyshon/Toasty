@@ -1,2 +1,3 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.andyshon.toasty"/>
+<manifest package="com.andyshon.toasty">
+
+</manifest>

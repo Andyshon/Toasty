@@ -15,6 +15,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
+        Toasty.Config.instance
+            .setErrorColor(resources.getColor(R.color.colorAccent)) // optional
+            .setInfoColor(resources.getColor(R.color.colorAccent)) // optional
+            .setSuccessColor(resources.getColor(R.color.colorAccent)) // optional
+            .setWarningColor(resources.getColor(R.color.colorAccent)) // optional
+            .setTextColor(resources.getColor(R.color.colorAccent)) // optional
+            .tintIcon(true) // optional (apply textColor also to the icon)
+            .setGravity(Toasty.GRAVITY.RIGHT)
+            .setToastTypeface(Typeface.DEFAULT) // optional
+            .setTextSize(30) // optional
+
+            .apply(); // required
+
+
         button_error_toast.setOnClickListener {
             Toasty.error(this, R.string.error_message, Toast.LENGTH_SHORT, true, Toasty.GRAVITY.RIGHT).show()
         }
@@ -42,17 +56,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         button_info_toast_with_formatting.setOnClickListener {
-            Toasty.info(this, Toasty.getFormattedMessage(), Toasty.GRAVITY.RIGHT).show()
+            Toasty.info(this, Toasty.getFormattedMessage("before", "that formatted text", "after")).show()
+
+            Toasty.custom(this@MainActivity, "I'm a custom Toast", resources.getDrawable(R.drawable.ic_check_white_48dp), resources.getColor(Color.GREEN),
+                Toast.LENGTH_LONG, true, true, Toasty.GRAVITY.RIGHT).show()
         }
 
         button_custom_config.setOnClickListener {
-                Toasty.Companion.Config.instance
+                Toasty.Config.instance
                     .setTextColor(Color.GREEN)
                     .setToastTypeface(Typeface.createFromAsset(assets, "PCap Terminal.otf"))
                     .apply()
                 Toasty.custom(this, R.string.custom_message, resources.getDrawable(R.drawable.akka_lenya),
                     Color.BLACK, Toast.LENGTH_LONG, true, true, Toasty.GRAVITY.RIGHT).show()
-                Toasty.Companion.Config.reset() // Use this if you want to use the configuration above only once
+                Toasty.Config.reset() // Use this if you want to use the configuration above only once
             }
     }
 }
+
+

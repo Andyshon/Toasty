@@ -8,10 +8,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.NinePatchDrawable
 import android.os.Build
-import android.support.annotation.CheckResult
-import android.support.annotation.ColorInt
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
+import android.support.annotation.*
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
@@ -42,6 +39,7 @@ class Toasty {
         private var currentTypeface: Typeface? = null
         private var textSize: Int
         private var tintIcon: Boolean
+        private var gravity: GRAVITY = GRAVITY.LEFT
 
         init {
             currentTypeface = LOADED_TOAST_TYPEFACE
@@ -390,111 +388,6 @@ class Toasty {
         }
 
 
-        class Config private constructor() {
-            @ColorInt
-            private var DEFAULT_TEXT_COLOR: Int = 0
-            @ColorInt
-            private var ERROR_COLOR: Int = 0
-            @ColorInt
-            private var INFO_COLOR: Int = 0
-            @ColorInt
-            private var SUCCESS_COLOR: Int = 0
-            @ColorInt
-            private var WARNING_COLOR: Int = 0
-            private var typeface: Typeface? = null
-            private var textSize: Int = 0
-            private var tintIcon: Boolean = false
-
-            init {
-                this.DEFAULT_TEXT_COLOR = Toasty.DEFAULT_TEXT_COLOR
-                this.ERROR_COLOR = Toasty.ERROR_COLOR
-                this.INFO_COLOR = Toasty.INFO_COLOR
-                this.SUCCESS_COLOR = Toasty.SUCCESS_COLOR
-                this.WARNING_COLOR = Toasty.WARNING_COLOR
-                this.typeface = Toasty.currentTypeface
-                this.textSize = Toasty.textSize
-                this.tintIcon = Toasty.tintIcon
-            }
-
-            @CheckResult
-            fun setTextColor(@ColorInt textColor: Int): Toasty.Companion.Config {
-                this.DEFAULT_TEXT_COLOR = textColor
-                return this
-            }
-
-            @CheckResult
-            fun setErrorColor(@ColorInt errorColor: Int): Toasty.Companion.Config {
-                this.ERROR_COLOR = errorColor
-                return this
-            }
-
-            @CheckResult
-            fun setInfoColor(@ColorInt infoColor: Int): Toasty.Companion.Config {
-                this.INFO_COLOR = infoColor
-                return this
-            }
-
-            @CheckResult
-            fun setSuccessColor(@ColorInt successColor: Int): Toasty.Companion.Config {
-                this.SUCCESS_COLOR = successColor
-                return this
-            }
-
-            @CheckResult
-            fun setWarningColor(@ColorInt warningColor: Int): Toasty.Companion.Config {
-                this.WARNING_COLOR = warningColor
-                return this
-            }
-
-            @CheckResult
-            fun setToastTypeface(typeface: Typeface): Toasty.Companion.Config {
-                this.typeface = typeface
-                return this
-            }
-
-            @CheckResult
-            fun setTextSize(sizeInSp: Int): Toasty.Companion.Config {
-                this.textSize = sizeInSp
-                return this
-            }
-
-            @CheckResult
-            fun tintIcon(tintIcon: Boolean): Toasty.Companion.Config {
-                this.tintIcon = tintIcon
-                return this
-            }
-
-            fun apply() {
-                Toasty.DEFAULT_TEXT_COLOR = this.DEFAULT_TEXT_COLOR
-                Toasty.ERROR_COLOR = this.ERROR_COLOR
-                Toasty.INFO_COLOR = this.INFO_COLOR
-                Toasty.SUCCESS_COLOR = this.SUCCESS_COLOR
-                Toasty.WARNING_COLOR = this.WARNING_COLOR
-                Toasty.currentTypeface = this.typeface
-                Toasty.textSize = this.textSize
-                Toasty.tintIcon = this.tintIcon
-            }
-
-            companion object {
-
-                val instance: Toasty.Companion.Config
-                    @CheckResult
-                    get() = Toasty.Companion.Config()
-
-                fun reset() {
-                    Toasty.DEFAULT_TEXT_COLOR = Color.parseColor("#FFFFFF")
-                    Toasty.ERROR_COLOR = Color.parseColor("#D50000")
-                    Toasty.INFO_COLOR = Color.parseColor("#3F51B5")
-                    Toasty.SUCCESS_COLOR = Color.parseColor("#388E3C")
-                    Toasty.WARNING_COLOR = Color.parseColor("#FFA900")
-                    Toasty.currentTypeface = Toasty.LOADED_TOAST_TYPEFACE
-                    Toasty.textSize = 16
-                    Toasty.tintIcon = true
-                }
-            }
-        }
-
-
         fun getFormattedMessage(before: String = "", formattedText: String = "Toast", after: String = "", style: STYLE = STYLE.NORMAL): CharSequence {
             val ssb = SpannableStringBuilder(before).append(formattedText).append(after)
             val prefixLen = before.length
@@ -503,6 +396,118 @@ class Toasty {
                 prefixLen, prefixLen + formattedText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
             return ssb
+        }
+    }
+
+    class Config  {
+        @ColorInt
+        private var DEFAULT_TEXT_COLOR: Int = 0
+        @ColorInt
+        private var ERROR_COLOR: Int = 0
+        @ColorInt
+        private var INFO_COLOR: Int = 0
+        @ColorInt
+        private var SUCCESS_COLOR: Int = 0
+        @ColorInt
+        private var WARNING_COLOR: Int = 0
+        private var typeface: Typeface? = null
+        private var textSize: Int = 0
+        private var tintIcon: Boolean = false
+        private var gravity: GRAVITY = GRAVITY.LEFT
+
+        init {
+            this.DEFAULT_TEXT_COLOR = Toasty.DEFAULT_TEXT_COLOR
+            this.ERROR_COLOR = Toasty.ERROR_COLOR
+            this.INFO_COLOR = Toasty.INFO_COLOR
+            this.SUCCESS_COLOR = Toasty.SUCCESS_COLOR
+            this.WARNING_COLOR = Toasty.WARNING_COLOR
+            this.typeface = Toasty.currentTypeface
+            this.textSize = Toasty.textSize
+            this.tintIcon = Toasty.tintIcon
+            this.gravity = Toasty.gravity
+        }
+
+        @CheckResult
+        fun setTextColor(@ColorInt textColor: Int): Toasty.Config {
+            this.DEFAULT_TEXT_COLOR = textColor
+            return this
+        }
+
+        @CheckResult
+        fun setErrorColor(@ColorInt errorColor: Int): Toasty.Config {
+            this.ERROR_COLOR = errorColor
+            return this
+        }
+
+        @CheckResult
+        fun setInfoColor(@ColorInt infoColor: Int): Toasty.Config {
+            this.INFO_COLOR = infoColor
+            return this
+        }
+
+        @CheckResult
+        fun setSuccessColor(@ColorInt successColor: Int): Toasty.Config {
+            this.SUCCESS_COLOR = successColor
+            return this
+        }
+
+        @CheckResult
+        fun setWarningColor(@ColorInt warningColor: Int): Toasty.Config {
+            this.WARNING_COLOR = warningColor
+            return this
+        }
+
+        @CheckResult
+        fun setToastTypeface(@NonNull typeface: Typeface): Toasty.Config {
+            this.typeface = typeface
+            return this
+        }
+
+        @CheckResult
+        fun setTextSize(sizeInSp: Int): Toasty.Config {
+            this.textSize = sizeInSp
+            return this
+        }
+
+        @CheckResult
+        fun tintIcon(tintIcon: Boolean): Toasty.Config {
+            this.tintIcon = tintIcon
+            return this
+        }
+
+        @CheckResult
+        fun setGravity(@NonNull gravity: GRAVITY): Toasty.Config {
+            this.gravity = this.gravity
+            return this
+        }
+
+        fun apply() {
+            Toasty.DEFAULT_TEXT_COLOR = this.DEFAULT_TEXT_COLOR
+            Toasty.ERROR_COLOR = this.ERROR_COLOR
+            Toasty.INFO_COLOR = this.INFO_COLOR
+            Toasty.SUCCESS_COLOR = this.SUCCESS_COLOR
+            Toasty.WARNING_COLOR = this.WARNING_COLOR
+            Toasty.currentTypeface = this.typeface
+            Toasty.textSize = this.textSize
+            Toasty.tintIcon = this.tintIcon
+        }
+
+        companion object {
+
+            val instance: Toasty.Config
+                @CheckResult
+                get() = Toasty.Config()
+
+            fun reset() {
+                Toasty.DEFAULT_TEXT_COLOR = Color.parseColor("#FFFFFF")
+                Toasty.ERROR_COLOR = Color.parseColor("#D50000")
+                Toasty.INFO_COLOR = Color.parseColor("#3F51B5")
+                Toasty.SUCCESS_COLOR = Color.parseColor("#388E3C")
+                Toasty.WARNING_COLOR = Color.parseColor("#FFA900")
+                Toasty.currentTypeface = Toasty.LOADED_TOAST_TYPEFACE
+                Toasty.textSize = 16
+                Toasty.tintIcon = true
+            }
         }
     }
 
